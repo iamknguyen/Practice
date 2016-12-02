@@ -1,3 +1,4 @@
 
 server/config/cfg.js
+public/lib/**
 node_modules
