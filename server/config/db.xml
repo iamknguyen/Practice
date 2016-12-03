@@ -55,35 +55,25 @@
 <row name="Spare1" null="1" autoincrement="0">
 <datatype>MEDIUMTEXT</datatype>
 <default>NULL</default></row>
-<row name="Spare2" null="1" autoincrement="0">
-<datatype>MEDIUMTEXT</datatype>
-<default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="913" y="142" name="Category">
+<table x="891" y="104" name="Category">
 <row name="id" null="0" autoincrement="1">
 <datatype>INTEGER</datatype>
 </row>
 <row name="name" null="0" autoincrement="0">
 <datatype>VARCHAR(50)</datatype>
 <default>'NULL'</default></row>
-<row name="id_User" null="0" autoincrement="0">
-<datatype>INTEGER</datatype>
-<relation table="User" row="id" />
-</row>
 <row name="Spare1" null="1" autoincrement="0">
-<datatype>MEDIUMTEXT</datatype>
-<default>NULL</default></row>
-<row name="Spare2" null="1" autoincrement="0">
 <datatype>MEDIUMTEXT</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="672" y="238" name="Lesson">
+<table x="690" y="169" name="Lesson">
 <row name="id" null="0" autoincrement="1">
 <datatype>INTEGER</datatype>
 </row>
@@ -107,14 +97,11 @@
 <row name="Spare1" null="1" autoincrement="0">
 <datatype>MEDIUMTEXT</datatype>
 <default>NULL</default></row>
-<row name="Spare2" null="1" autoincrement="0">
-<datatype>MEDIUMTEXT</datatype>
-<default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="408" y="602" name="Rating">
+<table x="388" y="494" name="Rating">
 <row name="id" null="0" autoincrement="1">
 <datatype>INTEGER</datatype>
 </row>
@@ -135,14 +122,11 @@
 <row name="Spare1" null="1" autoincrement="0">
 <datatype>MEDIUMTEXT</datatype>
 <default>NULL</default></row>
-<row name="Spare2" null="1" autoincrement="0">
-<datatype>MEDIUMTEXT</datatype>
-<default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="388" y="307" name="Booking">
+<table x="384" y="285" name="Booking">
 <row name="id" null="0" autoincrement="1">
 <datatype>INTEGER</datatype>
 </row>
@@ -163,14 +147,11 @@
 <row name="Spare1" null="1" autoincrement="0">
 <datatype>MEDIUMTEXT</datatype>
 <default>NULL</default></row>
-<row name="Spare2" null="1" autoincrement="0">
-<datatype>MEDIUMTEXT</datatype>
-<default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
-<table x="147" y="169" name="User">
+<table x="121" y="112" name="User">
 <row name="id" null="0" autoincrement="1">
 <datatype>INTEGER</datatype>
 </row>
@@ -196,11 +177,25 @@
 <row name="Spare1" null="1" autoincrement="0">
 <datatype>MEDIUMTEXT</datatype>
 <default>NULL</default></row>
-<row name="Spare2" null="1" autoincrement="0">
-<datatype>MEDIUMTEXT</datatype>
-<default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
+</table>
+<table x="964" y="445" name="UserCat">
+<row name="id" null="0" autoincrement="1">
+<datatype>INTEGER</datatype>
+</row>
+<row name="id_Category" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="Category" row="id" />
+</row>
+<row name="id_User" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="User" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>THIS IS A JOIN TABLE, and we should only add User if the User.teachFlag == true</comment>
 </table>
 </sql>
