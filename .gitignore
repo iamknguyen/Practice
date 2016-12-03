@@ -1,4 +1,5 @@
 
+.env
 server/config/cfg.js
-public/lib/**
+client/lib/**
 node_modules

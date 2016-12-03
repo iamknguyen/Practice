@@ -1,6 +1,6 @@
 -- how to run this file
 -- use the following command with your computer's absolute path (my filename was db.sql)
--- mysql -u root -p < C:\Users\Khoa\Documents\HRLA11\Projects\Practice\sean_pract\server\db\db.sql
+-- mysql -u root -p < C:\Users\Khoa\Documents\HRLA11\Projects\Practice\sean_pract\server\config\db.sql
 
 DROP DATABASE IF EXISTS teachMe;
 CREATE DATABASE IF NOT EXISTS teachMe;
@@ -24,7 +24,7 @@ CREATE TABLE `Requests` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL DEFAULT 'NULL',
   `id_Category` INTEGER NULL DEFAULT NULL,
-  `id_Student` INTEGER NULL DEFAULT NULL,
+  `id_User` INTEGER NULL DEFAULT NULL,
   `Spare1` MEDIUMTEXT NULL DEFAULT NULL,
   `Spare2` MEDIUMTEXT NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -40,6 +40,7 @@ DROP TABLE IF EXISTS `Category`;
 CREATE TABLE `Category` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL DEFAULT 'NULL',
+  `id_User` INTEGER NOT NULL,
   `Spare1` MEDIUMTEXT NULL DEFAULT NULL,
   `Spare2` MEDIUMTEXT NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -54,32 +55,11 @@ DROP TABLE IF EXISTS `Lesson`;
 		
 CREATE TABLE `Lesson` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
+  `id_User` INTEGER NOT NULL,
   `name` VARCHAR(50) NOT NULL DEFAULT 'NULL',
   `details` MEDIUMTEXT NULL DEFAULT NULL,
   `id_Category` INTEGER NULL DEFAULT NULL,
-  `id_Teachers` INTEGER NULL DEFAULT NULL,
   `rating` INTEGER NULL DEFAULT NULL,
-  `Spare1` MEDIUMTEXT NULL DEFAULT NULL,
-  `Spare2` MEDIUMTEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
--- ---
--- Table 'Teachers'
--- 
--- ---
-
-DROP TABLE IF EXISTS `Teachers`;
-		
-CREATE TABLE `Teachers` (
-  `id` INTEGER NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(50) NOT NULL DEFAULT 'NULL',
-  `rating` DECIMAL NULL DEFAULT NULL,
-  `bio` MEDIUMTEXT NULL DEFAULT NULL,
-  `available` MEDIUMTEXT NULL DEFAULT NULL,
-  `id_Category` INTEGER NULL DEFAULT NULL,
-  `Auth` MEDIUMTEXT NULL DEFAULT NULL,
-  `Picture` MEDIUMTEXT NULL DEFAULT NULL,
   `Spare1` MEDIUMTEXT NULL DEFAULT NULL,
   `Spare2` MEDIUMTEXT NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -95,7 +75,7 @@ DROP TABLE IF EXISTS `Rating`;
 CREATE TABLE `Rating` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `id_Lesson` INTEGER NOT NULL,
-  `id_Student` INTEGER NOT NULL,
+  `id_User` INTEGER NOT NULL,
   `rating` DECIMAL NULL DEFAULT NULL,
   `review` MEDIUMTEXT NULL DEFAULT NULL,
   `Spare1` MEDIUMTEXT NULL DEFAULT NULL,
@@ -113,7 +93,7 @@ DROP TABLE IF EXISTS `Booking`;
 CREATE TABLE `Booking` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `id_Lesson` INTEGER NULL DEFAULT NULL,
-  `id_Student` INTEGER NULL DEFAULT NULL,
+  `id_User` INTEGER NULL DEFAULT NULL,
   `accept` bit NULL DEFAULT NULL,
   `details` MEDIUMTEXT NULL DEFAULT NULL,
   `Spare1` MEDIUMTEXT NULL DEFAULT NULL,
@@ -122,19 +102,20 @@ CREATE TABLE `Booking` (
 );
 
 -- ---
--- Table 'Student'
+-- Table 'User'
 -- 
 -- ---
 
-DROP TABLE IF EXISTS `Student`;
+DROP TABLE IF EXISTS `User`;
 		
-CREATE TABLE `Student` (
+CREATE TABLE `User` (
   `id` INTEGER NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL DEFAULT 'NULL',
-  `rating` DECIMAL NULL DEFAULT NULL,
+  `teachFlag` bit NULL DEFAULT 0,
+  `rating` DECIMAL NULL DEFAULT NULL COMMENT 'ONLY if teachFlag = true',
   `bio` MEDIUMTEXT NULL DEFAULT NULL,
-  `Picture` MEDIUMTEXT NULL DEFAULT NULL,
-  `Auth` MEDIUMTEXT NULL DEFAULT NULL,
+  `picture` MEDIUMTEXT NULL DEFAULT NULL,
+  `auth` MEDIUMTEXT NULL DEFAULT NULL,
   `Spare1` MEDIUMTEXT NULL DEFAULT NULL,
   `Spare2` MEDIUMTEXT NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -145,14 +126,14 @@ CREATE TABLE `Student` (
 -- ---
 
 ALTER TABLE `Requests` ADD FOREIGN KEY (id_Category) REFERENCES `Category` (`id`);
-ALTER TABLE `Requests` ADD FOREIGN KEY (id_Student) REFERENCES `Student` (`id`);
+ALTER TABLE `Requests` ADD FOREIGN KEY (id_User) REFERENCES `User` (`id`);
+ALTER TABLE `Category` ADD FOREIGN KEY (id_User) REFERENCES `User` (`id`);
+ALTER TABLE `Lesson` ADD FOREIGN KEY (id_User) REFERENCES `User` (`id`);
 ALTER TABLE `Lesson` ADD FOREIGN KEY (id_Category) REFERENCES `Category` (`id`);
-ALTER TABLE `Lesson` ADD FOREIGN KEY (id_Teachers) REFERENCES `Teachers` (`id`);
-ALTER TABLE `Teachers` ADD FOREIGN KEY (id_Category) REFERENCES `Category` (`id`);
 ALTER TABLE `Rating` ADD FOREIGN KEY (id_Lesson) REFERENCES `Lesson` (`id`);
-ALTER TABLE `Rating` ADD FOREIGN KEY (id_Student) REFERENCES `Student` (`id`);
+ALTER TABLE `Rating` ADD FOREIGN KEY (id_User) REFERENCES `User` (`id`);
 ALTER TABLE `Booking` ADD FOREIGN KEY (id_Lesson) REFERENCES `Lesson` (`id`);
-ALTER TABLE `Booking` ADD FOREIGN KEY (id_Student) REFERENCES `Student` (`id`);
+ALTER TABLE `Booking` ADD FOREIGN KEY (id_User) REFERENCES `User` (`id`);
 
 -- ---
 -- Table Properties
@@ -161,26 +142,23 @@ ALTER TABLE `Booking` ADD FOREIGN KEY (id_Student) REFERENCES `Student` (`id`);
 -- ALTER TABLE `Requests` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `Category` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `Lesson` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `Teachers` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `Rating` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 -- ALTER TABLE `Booking` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `Student` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `User` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ---
 -- Test Data
 -- ---
 
--- INSERT INTO `Requests` (`id`,`name`,`id_Category`,`id_Student`,`Spare1`,`Spare2`) VALUES
+-- INSERT INTO `Requests` (`id`,`name`,`id_Category`,`id_User`,`Spare1`,`Spare2`) VALUES
 -- ('','','','','','');
--- INSERT INTO `Category` (`id`,`name`,`Spare1`,`Spare2`) VALUES
--- ('','','','');
--- INSERT INTO `Lesson` (`id`,`name`,`details`,`id_Category`,`id_Teachers`,`rating`,`Spare1`,`Spare2`) VALUES
+-- INSERT INTO `Category` (`id`,`name`,`id_User`,`Spare1`,`Spare2`) VALUES
+-- ('','','','','');
+-- INSERT INTO `Lesson` (`id`,`id_User`,`name`,`details`,`id_Category`,`rating`,`Spare1`,`Spare2`) VALUES
 -- ('','','','','','','','');
--- INSERT INTO `Teachers` (`id`,`name`,`rating`,`bio`,`available`,`id_Category`,`Auth`,`Picture`,`Spare1`,`Spare2`) VALUES
--- ('','','','','','','','','','');
--- INSERT INTO `Rating` (`id`,`id_Lesson`,`id_Student`,`rating`,`review`,`Spare1`,`Spare2`) VALUES
+-- INSERT INTO `Rating` (`id`,`id_Lesson`,`id_User`,`rating`,`review`,`Spare1`,`Spare2`) VALUES
 -- ('','','','','','','');
--- INSERT INTO `Booking` (`id`,`id_Lesson`,`id_Student`,`accept`,`details`,`Spare1`,`Spare2`) VALUES
+-- INSERT INTO `Booking` (`id`,`id_Lesson`,`id_User`,`accept`,`details`,`Spare1`,`Spare2`) VALUES
 -- ('','','','','','','');
--- INSERT INTO `Student` (`id`,`name`,`rating`,`bio`,`Picture`,`Auth`,`Spare1`,`Spare2`) VALUES
--- ('','','','','','','','');
+-- INSERT INTO `User` (`id`,`name`,`teachFlag`,`rating`,`bio`,`picture`,`auth`,`Spare1`,`Spare2`) VALUES
+-- ('','','','','','','','','');
