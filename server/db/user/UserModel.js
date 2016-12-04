@@ -1,19 +1,29 @@
 
+const Sequelize = require('../../config/dbConnect.js').Sequelize;
+const sequelize = require('../../config/dbConnect.js').sequelize;
 
-module.exports = (sequelize, DataTypes)=>{
-    var User = sequelize.define('User', {
-        firstName: {
-            type: DataTypes.STRING,
-            field: 'first_name' // Will result in an attribute that is firstName when user facing but first_name in the database
-        },
-        lastName: {
-            type: DataTypes.STRING
-        }
-        }, {
-        freezeTableName: true // Model tableName will be the same as the model name
-    });
-    
-    User.sync()
-    
-    return User;
-}
+var User = sequelize.define('User', {
+    name: {
+      type: Sequelize.STRING
+    },
+    teachFlag: {
+      type: Sequelize.BOOLEAN
+    },
+    rating: {
+      type: Sequelize.FLOAT
+    },
+    bio: {
+      type: Sequelize.TEXT
+    },
+    picture: {
+      type: Sequelize.TEXT
+    },
+    auth: {
+      type: Sequelize.TEXT
+    },
+    spare1: {
+      type: Sequelize.TEXT
+    }
+  },{freezeTableName:true});
+
+module.exports = User;

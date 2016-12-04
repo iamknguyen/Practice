@@ -8,7 +8,7 @@ const port = process.env.PORT;
 
 require('./config/middleware.js')(app, express);
 require('./config/routes.js')(app, express);
-require('./config/dBconnect.js');
+require('./config/dbConnect.js');
 // models.User.create({
 //     firstName: 'Jeff',
 //     lastName: 'Wayne'

@@ -1,17 +1,15 @@
 
-module.exports = (sequelize, DataTypes)=>{
-    var Category = sequelize.define('Category', {
-        firstName: {
-            type: DataTypes.STRING,
-            field: 'first_name' 
-        },
-        lastName: {
-            type: DataTypes.STRING
-        }
-        }, {
-        freezeTableName: true 
-    });
-    Category.sync();
-    
-    return Category;
-}
+const Sequelize = require('../../config/dbConnect.js').Sequelize;
+const sequelize = require('../../config/dbConnect.js').sequelize;
+
+
+var Category = sequelize.define('Category', {
+  name: {
+    type: Sequelize.STRING,
+  },
+  spare1: {
+    type: Sequelize.TEXT
+  }
+},{freezeTableName:true});
+module.exports = Category;
+  

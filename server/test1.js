@@ -1,34 +1,30 @@
 
 
-const models = require('./config/dBconnect.js');
-
+//const models = require('./config/dbConnect.js');
+const Request = require('./db/requests/RequestModel.js');
+const Category = require('./db/category/CategoryModel.js');
+const User = require('./db/user/UserModel.js');
 // pretend this is a controller
 module.exports = ()=>{
 
     console.log('in test');
-    models.Booking.create({
-        firstName: "booking",
-        lastName: "man"
+    var khoa = User.create({
+        name: 0
     })
-    models.Category.create({
-        firstName: "category",
-        lastName: "man"
+    Category.create({
+        name: "driving"
     })
-    models.Lesson.create({
-        firstName: "lesson",
-        lastName: "man"
-    })
-    models.Rating.create({
-        firstName: "rating",
-        lastName: "man"
-    })
-    models.Request.create({
-        firstName: "request",
-        lastName: "man"
-    })
-    models.User.create({
-        firstName: "user",
-        lastName: "man"
-    })
+    // Request.create({
+    //     name: "12312gsdgssg4",
+    //     userId: 1,
+    //     categoryId: 1,
+    //     // afdfafaewf: "dfaddfawef"
+    // })
+    // .then(function(request){
+    //     console.log('request is,',request);
+    //     request.addUser(khoa).then(function(model){
+    //         console.log(' i associated khoa', model);
+    //     });
+    // })
 
 }
